@@ -495,8 +495,13 @@ class CyclesRenderSettings(bpy.types.PropertyGroup):
 
     transparent_max_bounces: IntProperty(
         name="Transparent Max Bounces",
+<<<<<<< HEAD
         description="Maximum number of transparent bounces. This is independent of maximum number of other bounces ",
         min=0, max=1024,
+=======
+        description="Maximum number of transparent bounces",
+        min=0, max=131072,
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd
         default=8,
     )
 
@@ -521,7 +526,7 @@ class CyclesRenderSettings(bpy.types.PropertyGroup):
         description="Maximum number of steps through the volume before giving up, "
         "to avoid extremely long render times with big objects or small step sizes",
         default=1024,
-        min=2, max=65536
+        min=2, max=131072
     )
 
     dicing_rate: FloatProperty(
@@ -1131,8 +1136,8 @@ class CyclesVisibilitySettings(bpy.types.PropertyGroup):
     @classmethod
     def unregister(cls):
         del bpy.types.World.cycles_visibility
-
-
+        
+        
 class CyclesMeshSettings(bpy.types.PropertyGroup):
     @classmethod
     def register(cls):
@@ -1226,7 +1231,14 @@ class CyclesObjectSettings(bpy.types.PropertyGroup):
         default=0.0,
         subtype='DISTANCE',
     )
-
+    '''
+    # [Nicolas Antille] Feature: render curves as hair
+    render_curves_as_hair: BoolProperty(
+        name="Render curves as hair",
+        description="Render all splines within this curve object as Cycles hair",
+        default=False
+    )
+    '''
     @classmethod
     def register(cls):
         bpy.types.Object.cycles = PointerProperty(
@@ -1239,6 +1251,67 @@ class CyclesObjectSettings(bpy.types.PropertyGroup):
     def unregister(cls):
         del bpy.types.Object.cycles
 
+
+# [Nicolas Antille] Extension of Cycles to make curves renderable as hair
+class CyclesCurveHairSettings(bpy.types.PropertyGroup):
+    
+    render_as_hair: BoolProperty(
+        name="Render curves as hair",
+        description="Render all splines within this curve object as Cycles hair so that you don't need to mesh/bevel them in the viewport",
+        default=False
+    )
+    # Use custom data called "key" to retrieve information about tree branch order (useful for growing graph/tree datasets with bevel_end property)
+    use_key_as_branch_order: BoolProperty(
+        name="Use key custom data as order for spline reveal",
+        description="Use key data as branch order (works with reveal property)",
+        default=False
+    )
+    # Make bevel end property a factor of HairInfo.Intercept value
+    reveal_affects_intercept: BoolProperty(
+        name="Bevel end affects intercept",
+        description="Make intercept value depend on bevel end factor",
+        default=False
+    )
+    # Displace curve
+    points_displacement: FloatProperty(
+        name="Curve points displacement",
+        description="Displacement value applied on each point XYZ",
+        min=-100000000.0, max=100000000.0, soft_min=0.0,
+        default=0.0
+    )
+    # Displace radii
+    radii_displacement: FloatProperty(
+        name="Curve radii displacement",
+        description="Displacement value applied on each point radius",
+        min=-100000000.0, max=100000000.0, soft_min=0.0,
+        default=0.0
+    )
+    # Displace radii
+    additive_radii_displacement: BoolProperty(
+        name="Additive radii displacement only",
+        description="Apply only positive displacement to radii values",
+        default=True
+    )
+    # Displacement time fpr above features
+    displacement_time: FloatProperty(
+        name="Displacement time",
+        description="Animate displacement by changing the time",
+        min=-100000000.0, max=100000000.0, soft_min=0.0,
+        default=0.0
+    )
+    
+    @classmethod
+    def register(cls):
+        bpy.types.Curve.cycles_curves = PointerProperty(
+            name="Cycles custom curve hair settings",
+            description="Cycles custom curve hair settings",
+            type=cls,
+        )
+
+    @classmethod
+    def unregister(cls):
+        del bpy.types.Curve.cycles_curves
+        
 
 class CyclesCurveRenderSettings(bpy.types.PropertyGroup):
 
@@ -1544,6 +1617,7 @@ def register():
     bpy.utils.register_class(CyclesWorldSettings)
     bpy.utils.register_class(CyclesVisibilitySettings)
     bpy.utils.register_class(CyclesMeshSettings)
+    bpy.utils.register_class(CyclesCurveHairSettings)
     bpy.utils.register_class(CyclesObjectSettings)
     bpy.utils.register_class(CyclesCurveRenderSettings)
     bpy.utils.register_class(CyclesDeviceSettings)
@@ -1564,6 +1638,7 @@ def unregister():
     bpy.utils.unregister_class(CyclesLightSettings)
     bpy.utils.unregister_class(CyclesWorldSettings)
     bpy.utils.unregister_class(CyclesMeshSettings)
+    bpy.utils.unregister_class(CyclesCurveHairSettings)
     bpy.utils.unregister_class(CyclesObjectSettings)
     bpy.utils.unregister_class(CyclesVisibilitySettings)
     bpy.utils.unregister_class(CyclesCurveRenderSettings)

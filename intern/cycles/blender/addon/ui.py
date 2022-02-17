@@ -1201,9 +1201,50 @@ class CYCLES_OBJECT_PT_visibility_culling(CyclesButtonsPanel, Panel):
         row.active = scene.render.use_simplify and cscene.use_camera_cull
         row.prop(cob, "use_camera_cull")
 
+<<<<<<< HEAD
         row = layout.row()
         row.active = scene.render.use_simplify and cscene.use_distance_cull
         row.prop(cob, "use_distance_cull")
+=======
+        col = flow.column()
+        col.active = scene.render.use_simplify and cscene.use_camera_cull
+        col.prop(cob, "use_camera_cull")
+
+        col = flow.column()
+        col.active = scene.render.use_simplify and cscene.use_distance_cull
+        col.prop(cob, "use_distance_cull")
+        
+
+class CYCLES_CURVE_PT_hair_settings(CyclesButtonsPanel, Panel):
+    bl_label = "Render curve as hair"
+    bl_context = "data"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.object
+        return CyclesButtonsPanel.poll(context) and ob is not None and ob.type == 'CURVE'
+
+    def draw_header(self, context):
+        ob = context.object
+        self.layout.prop(ob.data.cycles_curves, "render_as_hair", text="Render as hair")
+        
+    def draw(self, context):
+        layout = self.layout
+        ob = context.object
+        cc = ob.data.cycles_curves
+        layout.active = cc.render_as_hair
+
+        col = self.layout.column()
+        col.separator()
+        col.prop(ob.data.cycles_curves, "use_key_as_branch_order", text="Use key data as branch order", expand=True)
+        col.prop(ob.data.cycles_curves, "reveal_affects_intercept", text="Bevel end affects HairInfo.Intercept", expand=True)
+        col.prop(ob.data.cycles_curves, "points_displacement", text="Displace curve points", expand=True)
+        col.prop(ob.data.cycles_curves, "radii_displacement", text="Displace curve radii", expand=True)
+        col.prop(ob.data.cycles_curves, "additive_radii_displacement", text="Additive radii displacement only", expand=True)
+        col.prop(ob.data.cycles_curves, "displacement_time", text="Displacement time", expand=True)
+        col.separator()
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd
 
 
 def panel_node_draw(layout, id_data, output_type, input_name):
@@ -2190,6 +2231,7 @@ classes = (
     CYCLES_OBJECT_PT_visibility,
     CYCLES_OBJECT_PT_visibility_ray_visibility,
     CYCLES_OBJECT_PT_visibility_culling,
+    CYCLES_CURVE_PT_hair_settings,
     CYCLES_LIGHT_PT_preview,
     CYCLES_LIGHT_PT_light,
     CYCLES_LIGHT_PT_nodes,

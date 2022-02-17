@@ -234,6 +234,21 @@ ccl_device_noinline void svm_node_hair_info(KernelGlobals kg,
       stack_store_float3(stack, out_offset, data3);
       break;
     }
+    case NODE_INFO_CURVE_INDEX: {
+      break; /* handled as attribute */
+    }
+    case NODE_INFO_CURVE_COUNT: {
+      break; /* handled as attribute */
+    }
+    case NODE_INFO_CURVE_LENGTH: {
+      break; /* handled as attribute */
+    }
+    case NODE_INFO_CURVE_KEY: {
+      break; /* handled as attribute */
+    }
+    case NODE_INFO_CURVE_VALUE: {
+      break; /* handled as attribute */
+    }
   }
 }
 #endif

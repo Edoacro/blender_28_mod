@@ -101,11 +101,19 @@ ustring OSLRenderServices::u_curve_thickness("geom:curve_thickness");
 ustring OSLRenderServices::u_curve_length("geom:curve_length");
 ustring OSLRenderServices::u_curve_tangent_normal("geom:curve_tangent_normal");
 ustring OSLRenderServices::u_curve_random("geom:curve_random");
+<<<<<<< HEAD:intern/cycles/kernel/osl/services.cpp
 ustring OSLRenderServices::u_is_point("geom:is_point");
 ustring OSLRenderServices::u_point_radius("geom:point_radius");
 ustring OSLRenderServices::u_point_position("geom:point_position");
 ustring OSLRenderServices::u_point_random("geom:point_random");
 ustring OSLRenderServices::u_normal_map_normal("geom:normal_map_normal");
+=======
+ustring OSLRenderServices::u_curve_index("geom:curve_index");
+ustring OSLRenderServices::u_curve_count("geom:curve_count");
+ustring OSLRenderServices::u_curve_length("geom:curve_length");
+ustring OSLRenderServices::u_curve_key("geom:curve_key");
+ustring OSLRenderServices::u_curve_value("geom:curve_value");
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd:intern/cycles/kernel/osl/osl_services.cpp
 ustring OSLRenderServices::u_path_ray_length("path:ray_length");
 ustring OSLRenderServices::u_path_ray_depth("path:ray_depth");
 ustring OSLRenderServices::u_path_diffuse_depth("path:diffuse_depth");

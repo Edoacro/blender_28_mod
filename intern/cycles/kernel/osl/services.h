@@ -283,12 +283,21 @@ class OSLRenderServices : public OSL::RendererServices {
   static ustring u_curve_thickness;
   static ustring u_curve_length;
   static ustring u_curve_tangent_normal;
+<<<<<<< HEAD:intern/cycles/kernel/osl/services.h
   static ustring u_curve_random;
   static ustring u_is_point;
   static ustring u_point_position;
   static ustring u_point_radius;
   static ustring u_point_random;
   static ustring u_normal_map_normal;
+=======
+  static ustring u_curve_random;  
+  static ustring u_curve_index;
+  static ustring u_curve_count;
+  static ustring u_curve_length;
+  static ustring u_curve_key;
+  static ustring u_curve_value;
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd:intern/cycles/kernel/osl/osl_services.h
   static ustring u_path_ray_length;
   static ustring u_path_ray_depth;
   static ustring u_path_diffuse_depth;

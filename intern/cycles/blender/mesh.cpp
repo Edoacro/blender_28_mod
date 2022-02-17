@@ -1099,9 +1099,15 @@ void BlenderSync::sync_mesh(BL::Depsgraph b_depsgraph, BObjectInfo &b_ob_info, M
     }
 
     /* For some reason, meshes do not need this... */
+<<<<<<< HEAD:intern/cycles/blender/mesh.cpp
     bool need_undeformed = new_mesh.need_attribute(scene, ATTR_STD_GENERATED);
     BL::Mesh b_mesh = object_to_mesh(
         b_data, b_ob_info, b_depsgraph, need_undeformed, new_mesh.get_subdivision_type());
+=======
+    bool need_undeformed = mesh->need_attribute(scene, ATTR_STD_GENERATED);
+      
+    BL::Mesh b_mesh = object_to_mesh(b_data, b_ob, b_depsgraph, need_undeformed, mesh->subdivision_type);
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd:intern/cycles/blender/blender_mesh.cpp
 
     if (b_mesh) {
       /* Motion blur attribute is relative to seconds, we need it relative to frames. */
@@ -1131,9 +1137,34 @@ void BlenderSync::sync_mesh(BL::Depsgraph b_depsgraph, BObjectInfo &b_ob_info, M
                     motion_scale,
                     false);
 
+<<<<<<< HEAD:intern/cycles/blender/mesh.cpp
       free_object_to_mesh(b_data, b_ob_info, b_mesh);
     }
   }
+=======
+        create_mesh_volume_attributes(scene, b_ob, mesh, b_scene.frame_current());
+      }
+
+      bool render_as_hair = false;
+      // [Nicolas Antille] : cycles_curves is here a property of the Curve data 
+      if(!b_ob_data || b_ob_data.is_a(&RNA_Curve)) {
+        PointerRNA cycles_curves = RNA_pointer_get(&b_ob_data.ptr, "cycles_curves");
+        render_as_hair = get_boolean(cycles_curves, "render_as_hair");
+      }
+
+      /* Sync hair curves. */
+      if ((view_layer.use_hair && show_particles &&
+          mesh->subdivision_type == Mesh::SUBDIVISION_NONE) || render_as_hair) {
+          
+        sync_curves(mesh, b_mesh, b_ob, false);
+      }
+
+      free_object_to_mesh(b_data, b_ob, b_mesh);
+    }
+  }
+
+  mesh->geometry_flags = requested_geometry_flags;
+>>>>>>> c403e35b8b1346b3fae8ab1cdb2a5234c6da90bd:intern/cycles/blender/blender_mesh.cpp
 
   /* update original sockets */
 
